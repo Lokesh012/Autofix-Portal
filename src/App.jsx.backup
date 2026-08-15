@@ -1,0 +1,170 @@
+import { useEffect, useState } from 'react';
+
+import React from 'react';
+import {
+  Activity, AlertCircle, Bell, CheckCircle2, ChevronRight, Clock3,
+  FileText, LayoutDashboard, ListChecks, Search, Settings, ShieldCheck,
+  Siren, Users, Wrench
+} from 'lucide-react';
+
+
+const services = [
+  ['Payment Service', 'Healthy', 99.98],
+  ['Identity Service', 'Healthy', 99.95],
+  ['Customer DB', 'Degraded', 98.72],
+  ['Notification Service', 'Healthy', 99.99],
+];
+
+function Stat({ icon: Icon, label, value, detail, tone }) {
+  return (
+    <div className="stat-card">
+      <div className={`stat-icon ${tone}`}><Icon size={20}/></div>
+      <div>
+        <div className="stat-label">{label}</div>
+        <div className="stat-value">{value}</div>
+        <div className="stat-detail">{detail}</div>
+      </div>
+    </div>
+  );
+}
+
+function App() {
+
+  const [incidents, setIncidents] = useState([]);
+
+  useEffect(() => {
+    fetch('http://localhost:8000/incidents')
+      .then(response => response.json())
+      .then(data => {
+        setIncidents(data.incidents);
+      })
+      .catch(error => {
+        console.error('Failed to load incidents:', error);
+      });
+  }, []);
+
+  return (
+    <div className="app-shell">
+      <aside className="sidebar">
+        <div className="brand">
+          <div className="brand-mark">A</div>
+          <div><div className="brand-name">AUTOFIX</div><div className="brand-sub">Operations Platform</div></div>
+        </div>
+
+        <div className="nav-section">
+          <div className="nav-title">WORKSPACE</div>
+          <div className="nav-item active"><LayoutDashboard size={18}/> Dashboard</div>
+          <div className="nav-item"><Siren size={18}/> Incidents <span className="badge">12</span></div>
+          <div className="nav-item"><ListChecks size={18}/> Service Requests</div>
+          <div className="nav-item"><FileText size={18}/> Problems & Defects</div>
+          <div className="nav-item"><Wrench size={18}/> Changes</div>
+          <div className="nav-item"><Activity size={18}/> Services</div>
+        </div>
+
+        <div className="nav-section">
+          <div className="nav-title">OPERATIONS</div>
+          <div className="nav-item"><ShieldCheck size={18}/> AutoFix</div>
+          <div className="nav-item"><Clock3 size={18}/> SLA Management</div>
+          <div className="nav-item"><Users size={18}/> Teams & Assignment</div>
+        </div>
+
+        <div className="sidebar-bottom">
+          <div className="nav-item"><Settings size={18}/> Settings</div>
+          <div className="user-mini">
+            <div className="avatar">LS</div>
+            <div><strong>Lokesh</strong><span>Operations Engineer</span></div>
+          </div>
+        </div>
+      </aside>
+
+      <main className="main">
+        <header className="topbar">
+          <div>
+            <div className="eyebrow">OPERATIONS CONTROL CENTER</div>
+            <h1>Good evening, Lokesh</h1>
+            <p>Here's the current operational health across your services.</p>
+          </div>
+          <div className="top-actions">
+            <div className="search"><Search size={17}/><input placeholder="Search incidents, services..." /></div>
+            <button className="icon-button"><Bell size={19}/><span className="notification-dot"/></button>
+            <div className="profile">LS</div>
+          </div>
+        </header>
+
+        <section className="stats-grid">
+          <Stat icon={AlertCircle} label="Active Incidents" value="12" detail="+2 in last hour" tone="red"/>
+          <Stat icon={Siren} label="Critical" value="2" detail="1 requires attention" tone="orange"/>
+          <Stat icon={CheckCircle2} label="AutoFixed Today" value="37" detail="94.8% success rate" tone="green"/>
+          <Stat icon={Activity} label="Services" value="24" detail="23 healthy · 1 degraded" tone="purple"/>
+        </section>
+
+        <section className="content-grid">
+          <div className="panel incidents-panel">
+            <div className="panel-header">
+              <div><h2>Active Incidents</h2><p>Latest production events requiring attention</p></div>
+              <button className="text-button">View all <ChevronRight size={15}/></button>
+            </div>
+            <div className="incident-list">
+              {incidents.map((i) => (
+                <div className="incident-row" key={i.id}>
+                  <div className={`severity-dot ${i.severity.toLowerCase()}`}/>
+                  <div className="incident-main">
+                    <div className="incident-title">{i.title}</div>
+                    <div className="incident-meta">{i.id} · {i.service} · {i.age} ago</div>
+                  </div>
+                  <div className={`status ${i.status.toLowerCase().replaceAll(' ', '-')}`}>{i.status}</div>
+                  <ChevronRight className="row-chevron" size={17}/>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="panel health-panel">
+            <div className="panel-header">
+              <div><h2>Service Health</h2><p>Real-time availability</p></div>
+              <Activity size={18} className="muted"/>
+            </div>
+            <div className="health-list">
+              {services.map(([name, status, uptime]) => (
+                <div className="health-row" key={name}>
+                  <div className={`health-indicator ${status.toLowerCase()}`}/>
+                  <div className="health-name">{name}</div>
+                  <div className="uptime">{uptime}%</div>
+                  <div className={`health-status ${status.toLowerCase()}`}>{status}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="bottom-grid">
+          <div className="panel autofix-panel">
+            <div className="autofix-glow"/>
+            <div className="panel-header">
+              <div><h2>AutoFix Activity</h2><p>Automated remediation in the last 24 hours</p></div>
+              <div className="live-pill"><span/> LIVE</div>
+            </div>
+            <div className="fix-summary">
+              <div><strong>37</strong><span>Remediations</span></div>
+              <div><strong>35</strong><span>Successful</span></div>
+              <div><strong>2</strong><span>Escalated</span></div>
+              <div><strong>94.8%</strong><span>Success Rate</span></div>
+            </div>
+            <div className="progress"><div/></div>
+          </div>
+
+          <div className="panel sla-panel">
+            <div className="panel-header">
+              <div><h2>SLA Watch</h2><p>Incidents approaching breach</p></div>
+              <Clock3 size={18} className="muted"/>
+            </div>
+            <div className="sla-item"><span className="sla-critical">Critical</span><strong>INC-10482</strong><span className="countdown">00:18:42</span></div>
+            <div className="sla-item"><span className="sla-high">High</span><strong>INC-10481</strong><span className="countdown">00:42:15</span></div>
+          </div>
+        </section>
+      </main>
+    </div>
+  );
+}
+
+export default App;

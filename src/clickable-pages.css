@@ -1,0 +1,33 @@
+/* Add this to the bottom of your existing src/styles.css */
+.clickable { cursor: pointer; }
+.clickable:hover { background: rgba(255,255,255,.035); }
+.brand { cursor: pointer; }
+.empty-inline { padding: 28px 20px; color:#766b82; font-size:11px; }
+.page-panel { min-height: 500px; }
+.action-button,.back-button { border:1px solid rgba(255,255,255,.09); background:rgba(255,255,255,.045); color:#d8d0e1; border-radius:8px; padding:8px 11px; font-size:10px; display:flex; align-items:center; gap:7px; cursor:pointer; }
+.action-button:hover,.back-button:hover { background:rgba(255,255,255,.08); color:#fff; }
+.back-button { border:0; background:none; padding-left:0; }
+.incident-table { padding:0 20px 20px; }
+.table-head,.table-row { display:grid; grid-template-columns:105px 1.8fr 1fr .8fr .8fr; gap:15px; align-items:center; }
+.table-head { color:#6f657b; font-size:9px; text-transform:uppercase; letter-spacing:.8px; padding:14px 0; border-bottom:1px solid rgba(255,255,255,.06); }
+.table-row { color:#bfb6c9; font-size:10px; padding:15px 0; border-bottom:1px solid rgba(255,255,255,.045); }
+.table-row strong { color:#e9e2ef; }
+.severity-text { font-weight:600; }
+.severity-text.critical { color:#ff7697; }
+.severity-text.high { color:#ffb35c; }
+.severity-text.medium { color:#d9c64e; }
+.severity-text.low { color:#5bd99f; }
+.detail-body { padding:25px; }
+.detail-title-row { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:25px; }
+.detail-title-row h2 { margin:0 0 8px; font-size:22px; }
+.detail-title-row h3 { margin:0; font-size:16px; color:#d7cfdf; font-weight:600; }
+.detail-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:20px; }
+.detail-grid div,.detail-description { border:1px solid rgba(255,255,255,.06); background:rgba(255,255,255,.025); border-radius:9px; padding:15px; }
+.detail-grid span,.detail-description span { display:block; color:#756a83; font-size:9px; margin-bottom:6px; }
+.detail-grid strong { font-size:11px; }
+.detail-description p { margin:0; color:#a69bb1; font-size:11px; line-height:1.6; }
+.service-page { padding:12px 25px 25px; }
+.empty-state { min-height:390px; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:40px; }
+.empty-icon { width:52px;height:52px;border-radius:14px;background:rgba(159,91,255,.12);color:#b47bff;display:grid;place-items:center;margin-bottom:15px; }
+.empty-state h3 { margin:0 0 7px;font-size:15px; }
+.empty-state p { max-width:520px; color:#7d7289; font-size:11px; line-height:1.7; margin:0 0 18px; }
