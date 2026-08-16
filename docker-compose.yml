@@ -1,0 +1,42 @@
+services:
+
+  frontend:
+    build:
+      context: .
+    container_name: autofix-frontend
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend
+
+  backend:
+    build:
+      context: ./backend
+    container_name: autofix-backend
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: postgresql://autofix:autofix@postgres:5432/autofix
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  postgres:
+    image: postgres:16
+    container_name: autofix-postgres
+    environment:
+      POSTGRES_USER: autofix
+      POSTGRES_PASSWORD: autofix
+      POSTGRES_DB: autofix
+    ports:
+      - "5432:5432"
+    volumes:
+      - autofix-postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U autofix -d autofix"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  autofix-postgres-data:
